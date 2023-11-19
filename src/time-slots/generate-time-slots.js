@@ -1,4 +1,4 @@
-import dateFns from 'date-fns';
+import * as dateFns from 'date-fns';
 
 function generateTimeSlots(selectedDate, slotSizeMinutes) {
   const isToday = dateFns.isToday(selectedDate);

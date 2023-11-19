@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import dateFns from 'date-fns';
+import * as dateFns from 'date-fns';
 
 import generateTimeSlots from './generate-time-slots';
 

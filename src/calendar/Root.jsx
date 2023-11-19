@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import dateFns from 'date-fns';
+import * as dateFns from 'date-fns';
 import { pt } from 'date-fns/locale';
 
 import { PrevIcon, NextIcon } from '../Icons';
@@ -80,11 +80,11 @@ function Root({ validator, pickDay }) {
 
           <Wrapper>
             <CurrentMonth animation={animation}>
-              {dateFns.format(month, 'MMMM YYYY', { locale: pt })}
+              {dateFns.format(month, 'MMMM yyyy', { locale: pt })}
             </CurrentMonth>
 
             <FakeCurrentMonth animation={animation}>
-              {dateFns.format(fakeMonth, 'MMMM YYYY', { locale: pt })}
+              {dateFns.format(fakeMonth, 'MMMM yyyy', { locale: pt })}
             </FakeCurrentMonth>
           </Wrapper>
 
@@ -111,7 +111,7 @@ function Root({ validator, pickDay }) {
                 return <MonthDay key={day} />;
               }
 
-              const formatted = dateFns.format(day, 'D');
+              const formatted = dateFns.format(day, 'd');
               const isToday = dateFns.isToday(day);
               const isValid = validator ? validator(day) : true;
               return (
@@ -145,7 +145,7 @@ function Root({ validator, pickDay }) {
                   return <MonthDay key={fakeDay} />;
                 }
 
-                const formatted = dateFns.format(fakeDay, 'D');
+                const formatted = dateFns.format(fakeDay, 'd');
                 const isToday = dateFns.isToday(fakeDay);
                 const isValid = validator ? validator(fakeDay) : true;
                 return (

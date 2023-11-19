@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import dateFns from 'date-fns';
+import * as dateFns from 'date-fns';
 import { pt } from 'date-fns/locale';
 import { ThemeProvider } from 'styled-components';
 
@@ -65,7 +65,8 @@ function DayTimePicker({
             <PopupHeader>
               <p>
                 <DayIcon />
-                {dateFns.format(pickedDay, 'dddd, MMMM Do, YYYY', {
+                {' '}
+                {dateFns.format(pickedDay, "dd 'de' MMMM, yyyy", {
                   locale: pt
                 })}
               </p>
@@ -87,7 +88,9 @@ function DayTimePicker({
           <Popup>
             <PopupHeader>
               <p>
-                <DayIcon /> {dateFns.format(pickedTime, 'dddd, MMMM Do, YYYY')}
+                <DayIcon /> {dateFns.format(pickedTime, "dd 'de' MMMM, yyyy", {
+                  locale: pt
+                })}
               </p>
 
               <p>
@@ -132,10 +135,10 @@ function DayTimePicker({
 DayTimePicker.propTypes = {
   timeSlotValidator: PropTypes.func,
   timeSlotSizeMinutes: PropTypes.number.isRequired,
-  isLoading: PropTypes.bool.isRequired,
-  isDone: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool,
+  isDone: PropTypes.bool,
   err: PropTypes.string,
-  onConfirm: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func,
   confirmText: PropTypes.string,
   loadingText: PropTypes.string,
   doneText: PropTypes.string,
