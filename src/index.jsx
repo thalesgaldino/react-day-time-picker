@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import dateFns from 'date-fns';
+import { pt } from 'date-fns/locale';
 import { ThemeProvider } from 'styled-components';
 
 import { PopupWrapper, Popup, PopupHeader, PopupClose } from './Popup';
@@ -63,10 +64,13 @@ function DayTimePicker({
           <Popup>
             <PopupHeader>
               <p>
-                <DayIcon /> {dateFns.format(pickedDay, 'dddd, MMMM Do, YYYY')}
+                <DayIcon />
+                {dateFns.format(pickedDay, 'dddd, MMMM Do, YYYY', {
+                  locale: pt
+                })}
               </p>
               <p>
-                <PopupClose onClick={handleClosePickTime}>Go Back</PopupClose>
+                <PopupClose onClick={handleClosePickTime}>Voltar</PopupClose>
               </p>
             </PopupHeader>
 
@@ -93,7 +97,7 @@ function DayTimePicker({
               {!isDone && (
                 <p>
                   <PopupClose disabled={isLoading} onClick={handleCloseConfirm}>
-                    Go Back
+                    Voltar
                   </PopupClose>
                 </p>
               )}
