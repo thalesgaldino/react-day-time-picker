@@ -68,3 +68,5 @@ lib
 
 # VSCode
 jsconfig.json
+
+.DS_Store

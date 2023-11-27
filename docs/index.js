@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import { Main, Footer } from './components/Layout';
 
@@ -729,4 +730,5 @@ function App() {
 }
 
 const target = document.getElementById('root');
-render(<App />, target);
+const root = createRoot(target);
+root.render(<App />);

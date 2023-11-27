@@ -1,6 +1,18 @@
 import styled from 'styled-components';
+import { format, eachDayOfInterval } from 'date-fns';
 
-export const WEEK_DAYS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'];
+//just a random sunday so the calendar always starts on Sunday
+const randomSunday = new Date(2023, 1, 5);
+const clone = new Date(randomSunday.getTime());
+const sevenDaysLater = new Date(clone.setDate(randomSunday.getDate() + 6));
+
+const daysOfWeek = eachDayOfInterval({
+  start: randomSunday,
+  end: sevenDaysLater
+});
+
+export const createWeekDays = locale =>
+  daysOfWeek.map(day => format(day, 'EEE', { locale }));
 
 export const WeekDays = styled.ul`
   display: grid;

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import * as dateFns from 'date-fns';
-import { pt } from 'date-fns/locale';
 
 import { PrevIcon, NextIcon } from '../Icons';
 
 import { Grid, Wrapper, MonthYear, DaysOfWeek, DaysOfMonth } from './Layout';
-import { WeekDays, WeekDay, WEEK_DAYS } from './WeekDays';
+import { WeekDays, WeekDay, createWeekDays } from './WeekDays';
 import { MonthDays, MonthDay } from './MonthDays';
 
 import {
@@ -21,7 +20,7 @@ import { Calendar, FakeCalendar } from './Calendar';
 
 import generateDays from './generate-days';
 
-function Root({ validator, pickDay }) {
+function Root({ validator, pickDay, locale }) {
   const [month, setMonth] = useState(new Date());
   const [fakeMonth, setFakeMonth] = useState(month);
   const [animation, setAnimation] = useState('');
@@ -80,11 +79,11 @@ function Root({ validator, pickDay }) {
 
           <Wrapper>
             <CurrentMonth animation={animation}>
-              {dateFns.format(month, 'MMMM yyyy', { locale: pt })}
+              {dateFns.format(month, 'MMMM yyyy', { locale })}
             </CurrentMonth>
 
             <FakeCurrentMonth animation={animation}>
-              {dateFns.format(fakeMonth, 'MMMM yyyy', { locale: pt })}
+              {dateFns.format(fakeMonth, 'MMMM yyyy', { locale })}
             </FakeCurrentMonth>
           </Wrapper>
 
@@ -98,7 +97,7 @@ function Root({ validator, pickDay }) {
         <Calendar animation={animation} onAnimationEnd={handleAnimationEnd}>
           <DaysOfWeek>
             <WeekDays>
-              {WEEK_DAYS.map(weekDay => {
+              {createWeekDays(locale).map(weekDay => {
                 return <WeekDay key={weekDay}>{weekDay}</WeekDay>;
               })}
             </WeekDays>
@@ -131,7 +130,7 @@ function Root({ validator, pickDay }) {
         <FakeCalendar animation={animation}>
           <DaysOfWeek>
             <WeekDays>
-              {WEEK_DAYS.map(weekDay => {
+              {createWeekDays(locale).map(weekDay => {
                 return <WeekDay key={weekDay}>{weekDay}</WeekDay>;
               })}
             </WeekDays>
@@ -169,7 +168,8 @@ function Root({ validator, pickDay }) {
 
 Root.propTypes = {
   validator: PropTypes.func,
-  pickDay: PropTypes.func.isRequired
+  pickDay: PropTypes.func.isRequired,
+  locale: PropTypes.object
 };
 
 export default Root;

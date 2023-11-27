@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import * as dateFns from 'date-fns';
-import { pt } from 'date-fns/locale';
+import { enUS, pt } from 'date-fns/locale';
 import { ThemeProvider } from 'styled-components';
 
 import { PopupWrapper, Popup, PopupHeader, PopupClose } from './Popup';
@@ -12,7 +12,10 @@ import { Success, Failed } from './Feedback';
 import Calendar from './calendar';
 import TimeSlots from './time-slots';
 
-import { preventPastDays } from './validators';
+import { preventPastDays, preventPastDays48h } from './validators';
+
+const EN_FORMAT_PATTERN = 'EEE, MMMM do, yyyy';
+const PT_FORMAT_PATTERN = "dd 'de' MMMM, yyyy";
 
 function DayTimePicker({
   timeSlotValidator,
@@ -24,7 +27,11 @@ function DayTimePicker({
   confirmText,
   loadingText,
   doneText,
-  theme
+  backText,
+  theme,
+  datePattern,
+  calendarValidator = preventPastDays48h,
+  locale = pt
 }) {
   const [pickedDay, setPickedDay] = useState(null);
   const [pickedTime, setPickedTime] = useState(null);
@@ -58,20 +65,25 @@ function DayTimePicker({
   return (
     <ThemeProvider theme={theme}>
       <PopupWrapper>
-        <Calendar validator={preventPastDays} pickDay={handlePickDay} />
+        <Calendar
+          validator={calendarValidator}
+          pickDay={handlePickDay}
+          locale={locale}
+        />
 
         {showPickTime && (
           <Popup>
             <PopupHeader>
               <p>
-                <DayIcon />
-                {' '}
-                {dateFns.format(pickedDay, "dd 'de' MMMM, yyyy", {
-                  locale: pt
+                <DayIcon />{' '}
+                {dateFns.format(pickedDay, datePattern, {
+                  locale
                 })}
               </p>
               <p>
-                <PopupClose onClick={handleClosePickTime}>Voltar</PopupClose>
+                <PopupClose onClick={handleClosePickTime}>
+                  {backText}
+                </PopupClose>
               </p>
             </PopupHeader>
 
@@ -88,8 +100,9 @@ function DayTimePicker({
           <Popup>
             <PopupHeader>
               <p>
-                <DayIcon /> {dateFns.format(pickedTime, "dd 'de' MMMM, yyyy", {
-                  locale: pt
+                <DayIcon />{' '}
+                {dateFns.format(pickedTime, datePattern, {
+                  locale
                 })}
               </p>
 
@@ -100,7 +113,7 @@ function DayTimePicker({
               {!isDone && (
                 <p>
                   <PopupClose disabled={isLoading} onClick={handleCloseConfirm}>
-                    Voltar
+                    {backText}
                   </PopupClose>
                 </p>
               )}
@@ -142,6 +155,7 @@ DayTimePicker.propTypes = {
   confirmText: PropTypes.string,
   loadingText: PropTypes.string,
   doneText: PropTypes.string,
+  backText: PropTypes.string,
   theme: PropTypes.shape({
     primary: PropTypes.string,
     secondary: PropTypes.string,
@@ -160,13 +174,18 @@ DayTimePicker.propTypes = {
         })
       })
     })
-  })
+  }),
+  calendarValidator: PropTypes.func,
+  locale: PropTypes.object,
+  datePattern: PropTypes.string
 };
 
 DayTimePicker.defaultProps = {
   confirmText: 'Schedule',
   loadingText: 'Scheduling..',
   doneText: 'Your event has been scheduled!',
+  backText: 'Back',
+  datePattern: EN_FORMAT_PATTERN,
   theme: {
     primary: '#3a9ad9',
     secondary: '#f0f0f0',
