@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import * as dateFns from 'date-fns';
-import { enUS, pt } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale';
 import { ThemeProvider } from 'styled-components';
 
 import { PopupWrapper, Popup, PopupHeader, PopupClose } from './Popup';
@@ -12,10 +12,9 @@ import { Success, Failed } from './Feedback';
 import Calendar from './calendar';
 import TimeSlots from './time-slots';
 
-import { preventPastDays, preventPastDays48h } from './validators';
+import { preventPastDays } from './validators';
 
 const EN_FORMAT_PATTERN = 'EEE, MMMM do, yyyy';
-const PT_FORMAT_PATTERN = "dd 'de' MMMM, yyyy";
 
 function DayTimePicker({
   timeSlotValidator,
@@ -30,8 +29,8 @@ function DayTimePicker({
   backText,
   theme,
   datePattern,
-  calendarValidator = preventPastDays48h,
-  locale = pt
+  calendarValidator = preventPastDays,
+  locale = enUS
 }) {
   const [pickedDay, setPickedDay] = useState(null);
   const [pickedTime, setPickedTime] = useState(null);
